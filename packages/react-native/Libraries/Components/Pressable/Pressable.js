@@ -251,7 +251,7 @@ function Pressable({
   let _accessibilityState = {
     busy: ariaBusy ?? accessibilityState?.busy,
     checked: ariaChecked ?? accessibilityState?.checked,
-    disabled: ariaDisabled ?? accessibilityState?.disabled,
+    disabled: ariaDisabled ?? accessibilityState?.disabled ?? false,
     expanded: ariaExpanded ?? accessibilityState?.expanded,
     selected: ariaSelected ?? accessibilityState?.selected,
   };

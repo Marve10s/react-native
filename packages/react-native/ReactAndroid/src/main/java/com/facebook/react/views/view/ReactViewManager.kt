@@ -10,6 +10,7 @@ package com.facebook.react.views.view
 import android.graphics.Rect
 import android.view.View
 import com.facebook.common.logging.FLog
+import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Dynamic
 import com.facebook.react.bridge.DynamicFromObject
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException
@@ -95,6 +96,26 @@ public open class ReactViewManager : ReactClippingViewManager<ReactViewGroup>() 
   @ReactProp(name = "accessible")
   public open fun setAccessible(view: ReactViewGroup, accessible: Boolean) {
     view.isFocusable = accessible
+  }
+
+  @ReactProp(name = ViewProps.ACCESSIBILITY_STATE)
+  override fun setViewState(view: ReactViewGroup, accessibilityState: ReadableMap?) {
+    if (
+        javaClass != ReactViewManager::class.java ||
+            accessibilityState != null &&
+                accessibilityState.hasKey("disabled") &&
+                !accessibilityState.isNull("disabled")
+    ) {
+      super.setViewState(view, accessibilityState)
+      return
+    }
+
+    val normalizedState = Arguments.createMap()
+    if (accessibilityState != null) {
+      normalizedState.merge(accessibilityState)
+    }
+    normalizedState.putBoolean("disabled", false)
+    super.setViewState(view, normalizedState)
   }
 
   @ReactProp(name = ViewProps.ACCESSIBILITY_ORDER)

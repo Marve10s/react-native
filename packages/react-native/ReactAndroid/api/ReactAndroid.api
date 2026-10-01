@@ -6540,6 +6540,8 @@ public class com/facebook/react/views/view/ReactViewManager : com/facebook/react
 	public fun setTVPreferredFocus (Lcom/facebook/react/views/view/ReactViewGroup;Z)V
 	public synthetic fun setTransformProperty (Landroid/view/View;Lcom/facebook/react/bridge/ReadableArray;Lcom/facebook/react/bridge/ReadableArray;)V
 	protected fun setTransformProperty (Lcom/facebook/react/views/view/ReactViewGroup;Lcom/facebook/react/bridge/ReadableArray;Lcom/facebook/react/bridge/ReadableArray;)V
+	public synthetic fun setViewState (Landroid/view/View;Lcom/facebook/react/bridge/ReadableMap;)V
+	public fun setViewState (Lcom/facebook/react/views/view/ReactViewGroup;Lcom/facebook/react/bridge/ReadableMap;)V
 }
 
 public final class com/facebook/react/views/view/ReactViewManager$Companion {

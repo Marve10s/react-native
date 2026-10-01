@@ -15,6 +15,7 @@ import type {
   LayoutChangeEvent,
   MouseEvent,
 } from '../../Types/CoreEventTypes';
+import type {AccessibilityState} from '../View/ViewAccessibility';
 import type {ViewProps} from '../View/ViewPropTypes';
 
 import {PressabilityDebugView} from '../../Pressability/PressabilityDebug';
@@ -248,7 +249,7 @@ function Pressable({
   const shouldUpdatePressed =
     typeof children === 'function' || typeof style === 'function';
 
-  let _accessibilityState = {
+  let _accessibilityState: AccessibilityState = {
     busy: ariaBusy ?? accessibilityState?.busy,
     checked: ariaChecked ?? accessibilityState?.checked,
     disabled: ariaDisabled ?? accessibilityState?.disabled ?? false,

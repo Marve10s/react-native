@@ -69,8 +69,7 @@ class BaseViewManagerTest {
     val accessibilityState = JavaOnlyMap()
     accessibilityState.putBoolean("selected", true)
     viewManager.setViewState(view, accessibilityState)
-    Assertions.assertThat(view.getTag(R.id.accessibility_state))
-        .isEqualTo(JavaOnlyMap.of("selected", true, "disabled", false))
+    Assertions.assertThat(view.getTag(R.id.accessibility_state)).isEqualTo(accessibilityState)
     Assertions.assertThat(view.isSelected).isEqualTo(true)
   }
 
@@ -91,10 +90,7 @@ class BaseViewManagerTest {
 
       Assertions.assertThat(view.isEnabled).isTrue()
       Assertions.assertThat(TouchTargetHelper.findTargetTagForTouch(20f, 50f, root)).isEqualTo(3)
-      Assertions.assertThat(
-              (view.getTag(R.id.accessibility_state) as ReadableMap).getBoolean("disabled")
-          )
-          .isFalse()
+      Assertions.assertThat(view.getTag(R.id.accessibility_state_disabled)).isNull()
     }
   }
 
@@ -119,6 +115,38 @@ class BaseViewManagerTest {
 
     subclassManager.setViewState(view, JavaOnlyMap.of("busy", true))
 
+    Assertions.assertThat(view.isEnabled).isFalse()
+  }
+
+  @Test
+  fun testAccessibilityStateDisabledRemovedReenablesView() {
+    viewManager.setViewState(view, JavaOnlyMap.of("disabled", true))
+    Assertions.assertThat(view.isEnabled).isFalse()
+
+    viewManager.setViewState(view, JavaOnlyMap())
+    Assertions.assertThat(view.isEnabled).isTrue()
+  }
+
+  @Test
+  fun testAccessibilityStateNullReenablesView() {
+    viewManager.setViewState(view, JavaOnlyMap.of("disabled", true))
+    viewManager.setViewState(view, null)
+    Assertions.assertThat(view.isEnabled).isTrue()
+  }
+
+  @Test
+  fun testAccessibilityStateDisabledNullDoesNotCrash() {
+    viewManager.setViewState(view, JavaOnlyMap.of("disabled", true))
+    viewManager.setViewState(view, JavaOnlyMap.of("disabled", null))
+    Assertions.assertThat(view.isEnabled).isTrue()
+  }
+
+  @Test
+  fun testAccessibilityStateWithoutDisabledKeepsViewDisabledByOtherProps() {
+    view.isEnabled = false
+    viewManager.setViewState(view, JavaOnlyMap())
+    Assertions.assertThat(view.isEnabled).isFalse()
+    viewManager.setViewState(view, null)
     Assertions.assertThat(view.isEnabled).isFalse()
   }
 
